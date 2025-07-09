@@ -8,6 +8,7 @@ A comprehensive test automation framework built with Java, Selenium WebDriver, R
 - **UI Testing**: Selenium WebDriver with Page Object Model
 - **API Testing**: REST Assured for comprehensive API testing
 - **Database Testing**: MySQL database connectivity and operations
+- **BDD Testing**: Cucumber framework for Behavior Driven Development
 - **Multi-Data Support**: Excel, CSV, and JSON data sources
 - **Parallel Execution**: TestNG parallel test execution
 - **Reporting**: Extent Reports for detailed test reporting
@@ -97,6 +98,13 @@ robust-test-framework/
 │       ├── java/com/testframework/
 │       │   ├── pageobjects/
 │       │   │   └── GoogleHomePage.java
+│       │   ├── steps/
+│       │   │   ├── UI_StepDefinitions.java
+│       │   │   ├── API_StepDefinitions.java
+│       │   │   └── Database_StepDefinitions.java
+│       │   ├── cucumber/
+│       │   │   ├── CucumberTestRunner.java
+│       │   │   └── CucumberHooks.java
 │       │   └── tests/
 │       │       ├── ApiTest.java
 │       │       ├── DatabaseTest.java
@@ -104,6 +112,10 @@ robust-test-framework/
 │       └── resources/
 │           ├── config/
 │           │   └── config.properties
+│           ├── features/
+│           │   ├── ui_features.feature
+│           │   ├── api_features.feature
+│           │   └── database_features.feature
 │           └── data/
 │               ├── testdata.csv
 │               ├── testdata.json
@@ -140,6 +152,23 @@ mvn test -Dparallel=methods -DthreadCount=3
 ### Run Tests by Groups
 ```bash
 mvn test -Dgroups=smoke
+```
+
+### Run Cucumber BDD Tests
+```bash
+# Run all Cucumber tests
+mvn test -Dtest=CucumberTestRunner
+
+# Run specific Cucumber test types
+mvn test -Dtest=UITestRunner
+mvn test -Dtest=APITestRunner
+mvn test -Dtest=DatabaseTestRunner
+
+# Run tests by tags
+mvn test -Dcucumber.filter.tags="@smoke"
+mvn test -Dcucumber.filter.tags="@ui"
+mvn test -Dcucumber.filter.tags="@api"
+mvn test -Dcucumber.filter.tags="@database"
 ```
 
 ## 📊 Test Reports
@@ -201,6 +230,64 @@ List<Map<String, String>> data = csvDataProvider.readCsvData();
 ```java
 List<Map<String, Object>> data = jsonDataProvider.readJsonData();
 ```
+
+### 4. Cucumber BDD Testing
+The framework supports Behavior Driven Development (BDD) using Cucumber:
+
+#### Feature Files
+Create feature files in `src/test/resources/features/`:
+```gherkin
+Feature: Google Search Functionality
+  As a user
+  I want to search for information on Google
+  So that I can find relevant results
+
+  @smoke @ui
+  Scenario: Basic Google Search
+    Given I am on the Google homepage
+    When I search for "Selenium WebDriver"
+    Then I should see search results
+    And the page title should contain "Selenium WebDriver"
+```
+
+#### Step Definitions
+Create step definitions that implement the BDD steps:
+```java
+public class UI_StepDefinitions extends CucumberBaseTest {
+    
+    @Given("I am on the Google homepage")
+    public void i_am_on_the_google_homepage() {
+        driver = webDriverManager.getDriver();
+        googlePage = new GoogleHomePage(driver);
+        googlePage.navigateTo();
+    }
+    
+    @When("I search for {string}")
+    public void i_search_for(String searchTerm) {
+        googlePage.search(searchTerm);
+    }
+    
+    @Then("I should see search results")
+    public void i_should_see_search_results() {
+        assertTrue(googlePage.areSearchResultsDisplayed());
+    }
+}
+```
+
+#### Test Runners
+Use different test runners for different test types:
+```java
+@CucumberOptions(
+    features = "src/test/resources/features",
+    glue = {"com.testframework.steps"},
+    tags = "@ui",
+    plugin = {"pretty", "html:target/cucumber-reports/ui-tests.html"}
+)
+public class UITestRunner extends AbstractTestNGCucumberTests {
+}
+```
+
+### 5. API Testing
 
 ### 4. API Testing
 ```java
@@ -363,6 +450,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - Selenium WebDriver for UI automation
 - REST Assured for API testing
 - TestNG for test execution
+- Cucumber for BDD testing
 - Extent Reports for reporting
 - Apache POI for Excel handling
 - OpenCSV for CSV handling

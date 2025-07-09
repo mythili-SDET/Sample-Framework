@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Cucumber BDD Test Suite" parallel="classes" thread-count="3">
+    
+    <test name="All Cucumber Tests">
+        <classes>
+            <class name="com.testframework.cucumber.CucumberTestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="UI Tests Only">
+        <classes>
+            <class name="com.testframework.cucumber.UITestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="API Tests Only">
+        <classes>
+            <class name="com.testframework.cucumber.APITestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="Database Tests Only">
+        <classes>
+            <class name="com.testframework.cucumber.DatabaseTestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="Smoke Tests Only">
+        <classes>
+            <class name="com.testframework.cucumber.SmokeTestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="Regression Tests Only">
+        <classes>
+            <class name="com.testframework.cucumber.RegressionTestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="Parallel UI Tests">
+        <classes>
+            <class name="com.testframework.cucumber.UITestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="Parallel API Tests">
+        <classes>
+            <class name="com.testframework.cucumber.APITestRunner"/>
+        </classes>
+    </test>
+    
+    <test name="Parallel Database Tests">
+        <classes>
+            <class name="com.testframework.cucumber.DatabaseTestRunner"/>
+        </classes>
+    </test>
+    
+</suite>
