@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Robust Test Automation Suite" parallel="tests" thread-count="3" verbose="1">
+    
+    <!-- Global Parameters -->
+    <parameter name="environment" value="dev"/>
+    <parameter name="browser" value="chrome"/>
+    <parameter name="headless" value="false"/>
+    
+    <!-- Listeners -->
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+    
+    <!-- UI Tests -->
+    <test name="UI Tests" enabled="true">
+        <parameter name="test.type" value="ui"/>
+        <classes>
+            <class name="com.automation.ui.LoginTest"/>
+            <class name="com.automation.ui.DashboardTest"/>
+            <class name="com.automation.ui.UserManagementTest"/>
+        </classes>
+    </test>
+    
+    <!-- API Tests -->
+    <test name="API Tests" enabled="true">
+        <parameter name="test.type" value="api"/>
+        <classes>
+            <class name="com.automation.api.UserAPITest"/>
+            <class name="com.automation.api.ProductAPITest"/>
+            <class name="com.automation.api.AuthenticationAPITest"/>
+        </classes>
+    </test>
+    
+    <!-- Database Tests -->
+    <test name="Database Tests" enabled="true">
+        <parameter name="test.type" value="database"/>
+        <classes>
+            <class name="com.automation.database.UserDatabaseTest"/>
+            <class name="com.automation.database.ProductDatabaseTest"/>
+            <class name="com.automation.database.OrderDatabaseTest"/>
+        </classes>
+    </test>
+    
+    <!-- Smoke Tests -->
+    <test name="Smoke Tests" enabled="true">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.automation.*"/>
+        </packages>
+    </test>
+    
+    <!-- Regression Tests -->
+    <test name="Regression Tests" enabled="false">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.automation.*"/>
+        </packages>
+    </test>
+    
+    <!-- Data Driven Tests -->
+    <test name="Data Driven Tests" enabled="true">
+        <parameter name="data.source" value="excel"/>
+        <classes>
+            <class name="com.automation.ui.DataDrivenLoginTest"/>
+            <class name="com.automation.api.DataDrivenUserCreationTest"/>
+        </classes>
+    </test>
+    
+</suite>
