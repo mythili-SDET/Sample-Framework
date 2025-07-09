@@ -1,0 +1,13 @@
+# This is a placeholder for Excel file content
+# In a real scenario, you would create an actual Excel file with the following structure:
+# Sheet1:
+# SearchTerm | ExpectedResult
+# Selenium   | Selenium WebDriver
+# Java       | Java Programming
+# Python     | Python Programming
+
+# Sheet2:
+# Name | Email | Age
+# John | john@example.com | 25
+# Jane | jane@example.com | 30
+# Bob  | bob@example.com  | 35

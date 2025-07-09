@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Robust Test Automation Framework Suite" parallel="methods" thread-count="3">
+    
+    <test name="UI Tests" parallel="methods" thread-count="2">
+        <classes>
+            <class name="com.testframework.tests.UITest">
+                <methods>
+                    <include name="testGoogleSearch"/>
+                    <include name="testGoogleSearchWithExcelData"/>
+                    <include name="testGoogleSearchWithCsvData"/>
+                    <include name="testGoogleSearchWithJsonData"/>
+                    <include name="testGoogleSearchSuggestions"/>
+                    <include name="testGooglePageTitleAndUrl"/>
+                    <include name="testGoogleSearchBox"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <test name="API Tests" parallel="methods" thread-count="3">
+        <classes>
+            <class name="com.testframework.tests.ApiTest">
+                <methods>
+                    <include name="testGetAllPosts"/>
+                    <include name="testGetSpecificPost"/>
+                    <include name="testCreatePost"/>
+                    <include name="testUpdatePost"/>
+                    <include name="testDeletePost"/>
+                    <include name="testApiWithCustomHeaders"/>
+                    <include name="testApiWithQueryParameters"/>
+                    <include name="testApiResponseTime"/>
+                    <include name="testApiErrorHandling"/>
+                    <include name="testApiWithJsonData"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <test name="Database Tests" parallel="methods" thread-count="2">
+        <classes>
+            <class name="com.testframework.tests.DatabaseTest">
+                <methods>
+                    <include name="testDatabaseConnection"/>
+                    <include name="testDatabaseQuery"/>
+                    <include name="testDatabaseInsert"/>
+                    <include name="testDatabaseUpdate"/>
+                    <include name="testDatabaseDelete"/>
+                    <include name="testDatabaseRecordCount"/>
+                    <include name="testDatabaseRecordExistence"/>
+                    <include name="testDatabaseTableStructure"/>
+                    <include name="testDatabasePreparedStatement"/>
+                    <include name="testDatabaseSingleValue"/>
+                    <include name="testDatabaseWithExcelData"/>
+                    <include name="testDatabaseWithCsvData"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <!-- Test Groups -->
+    <test name="Smoke Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.testframework.tests.UITest"/>
+            <class name="com.testframework.tests.ApiTest"/>
+        </classes>
+    </test>
+    
+    <test name="Regression Tests">
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.testframework.tests.UITest"/>
+            <class name="com.testframework.tests.ApiTest"/>
+            <class name="com.testframework.tests.DatabaseTest"/>
+        </classes>
+    </test>
+    
+    <!-- Listeners -->
+    <listeners>
+        <listener class-name="com.testframework.core.TestListener"/>
+    </listeners>
+    
+    <!-- Parameters -->
+    <parameter name="browser" value="chrome"/>
+    <parameter name="headless" value="false"/>
+    <parameter name="implicitWait" value="10"/>
+    <parameter name="pageLoadTimeout" value="30"/>
+    
+</suite>

@@ -1,0 +1,9 @@
+SearchTerm,ExpectedResult,Category
+Selenium,Selenium WebDriver,Automation
+Java,Java Programming,Programming
+Python,Python Programming,Programming
+TestNG,TestNG Framework,Testing
+Maven,Maven Build Tool,Build
+Git,Git Version Control,Version Control
+Docker,Docker Containerization,DevOps
+Jenkins,Jenkins CI/CD,DevOps
