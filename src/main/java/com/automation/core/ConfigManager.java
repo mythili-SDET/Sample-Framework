@@ -177,11 +177,57 @@ public class ConfigManager {
         return getProperty("environment", "dev");
     }
 
+    public void setEnvironment(String environment) {
+        System.setProperty("environment", environment);
+        logger.info("Environment set to: {}", environment);
+    }
+
     public boolean isTestParallel() {
         return getBooleanProperty("test.parallel");
     }
 
     public int getThreadCount() {
         return getIntProperty("thread.count");
+    }
+
+    // Authentication Configuration
+    public String getAuthUrl() {
+        return getProperty("auth.url");
+    }
+
+    public String getUsername() {
+        return getProperty("username");
+    }
+
+    public String getPassword() {
+        return getProperty("password");
+    }
+
+    // Database Configuration - Additional Methods
+    public String getDatabaseUrl() {
+        return getDbUrl();
+    }
+
+    public String getDatabaseUsername() {
+        return getDbUsername();
+    }
+
+    public String getDatabasePassword() {
+        return getDbPassword();
+    }
+
+    public String getDatabaseDriver() {
+        return getDbDriver();
+    }
+
+    // Method to reload configuration
+    public void loadConfiguration() {
+        loadProperties();
+        logger.info("Configuration reloaded");
+    }
+
+    // Method to get all properties
+    public Properties getAllProperties() {
+        return new Properties(properties);
     }
 }

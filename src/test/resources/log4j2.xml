@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="LOG_PATH">target/logs</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <!-- File Appender for All Logs -->
+        <File name="FileAppender" fileName="${LOG_PATH}/automation.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </File>
+
+        <!-- Rolling File Appender for Framework Logs -->
+        <RollingFile name="RollingFileAppender" fileName="${LOG_PATH}/framework.log"
+                     filePattern="${LOG_PATH}/framework-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+
+        <!-- Separate Appender for Test Results -->
+        <File name="TestResultsAppender" fileName="${LOG_PATH}/test-results.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level - %msg%n"/>
+        </File>
+
+        <!-- Error Appender -->
+        <File name="ErrorAppender" fileName="${LOG_PATH}/errors.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </File>
+
+        <!-- Debug Appender -->
+        <File name="DebugAppender" fileName="${LOG_PATH}/debug.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <!-- Framework Package Loggers -->
+        <Logger name="com.automation.core" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileAppender"/>
+            <AppenderRef ref="ErrorAppender"/>
+        </Logger>
+
+        <Logger name="com.automation.utils" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+
+        <Logger name="com.automation.pages" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+
+        <Logger name="com.automation.stepdefinitions" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileAppender"/>
+            <AppenderRef ref="TestResultsAppender"/>
+        </Logger>
+
+        <Logger name="com.automation.hooks" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+
+        <!-- Third-party Library Loggers -->
+        <Logger name="org.seleniumhq.selenium" level="WARN" additivity="false">
+            <AppenderRef ref="DebugAppender"/>
+        </Logger>
+
+        <Logger name="io.restassured" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFileAppender"/>
+        </Logger>
+
+        <Logger name="org.apache.http" level="WARN" additivity="false">
+            <AppenderRef ref="DebugAppender"/>
+        </Logger>
+
+        <Logger name="org.testng" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TestResultsAppender"/>
+        </Logger>
+
+        <Logger name="io.cucumber" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="TestResultsAppender"/>
+        </Logger>
+
+        <!-- Database Loggers -->
+        <Logger name="java.sql" level="DEBUG" additivity="false">
+            <AppenderRef ref="DebugAppender"/>
+        </Logger>
+
+        <Logger name="com.mysql.cj" level="WARN" additivity="false">
+            <AppenderRef ref="DebugAppender"/>
+        </Logger>
+
+        <Logger name="org.postgresql" level="WARN" additivity="false">
+            <AppenderRef ref="DebugAppender"/>
+        </Logger>
+
+        <!-- Root Logger -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileAppender"/>
+            <AppenderRef ref="ErrorAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

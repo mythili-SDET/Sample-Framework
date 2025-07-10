@@ -1,0 +1,81 @@
+{
+  "loginData": [
+    {
+      "username": "admin",
+      "password": "password123",
+      "expectedResult": "success",
+      "description": "Valid admin credentials"
+    },
+    {
+      "username": "user1",
+      "password": "userpass",
+      "expectedResult": "success",
+      "description": "Valid user credentials"
+    },
+    {
+      "username": "testuser",
+      "password": "testpass123",
+      "expectedResult": "success",
+      "description": "Valid test user credentials"
+    },
+    {
+      "username": "invalid",
+      "password": "wrongpass",
+      "expectedResult": "failure",
+      "description": "Invalid credentials"
+    },
+    {
+      "username": "",
+      "password": "password123",
+      "expectedResult": "failure",
+      "description": "Empty username"
+    },
+    {
+      "username": "admin",
+      "password": "",
+      "expectedResult": "failure",
+      "description": "Empty password"
+    }
+  ],
+  "apiData": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "age": 30,
+      "active": true,
+      "role": "user"
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "age": 25,
+      "active": true,
+      "role": "admin"
+    },
+    {
+      "name": "Test User",
+      "email": "test.user@example.com",
+      "age": 35,
+      "active": false,
+      "role": "user"
+    }
+  ],
+  "searchData": [
+    {
+      "searchTerm": "John",
+      "expectedResults": 1,
+      "filters": {
+        "active": true,
+        "role": "user"
+      }
+    },
+    {
+      "searchTerm": "admin",
+      "expectedResults": 1,
+      "filters": {
+        "active": true,
+        "role": "admin"
+      }
+    }
+  ]
+}

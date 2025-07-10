@@ -189,4 +189,13 @@ public class DriverManager {
         }
         return "No Driver";
     }
+
+    /**
+     * Quit all driver instances (useful for cleanup)
+     */
+    public static void quitAllDrivers() {
+        // This method is called from hooks for global cleanup
+        // Since we're using ThreadLocal, each thread will clean up its own driver
+        quitDriver();
+    }
 }

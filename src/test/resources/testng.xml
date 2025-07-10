@@ -1,79 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Hybrid Automation Test Suite" parallel="tests" thread-count="3" verbose="2">
 
-<suite name="Robust Test Automation Suite" parallel="tests" thread-count="3" verbose="1">
-    
-    <!-- Global Parameters -->
-    <parameter name="environment" value="dev"/>
+    <!-- Global Suite Parameters -->
+    <parameter name="environment" value="qa"/>
     <parameter name="browser" value="chrome"/>
     <parameter name="headless" value="false"/>
-    
-    <!-- Listeners -->
+
+    <!-- Listeners for Enhanced Reporting -->
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
-    
-    <!-- UI Tests -->
-    <test name="UI Tests" enabled="true">
-        <parameter name="test.type" value="ui"/>
-        <classes>
-            <class name="com.automation.ui.LoginTest"/>
-            <class name="com.automation.ui.DashboardTest"/>
-            <class name="com.automation.ui.UserManagementTest"/>
-        </classes>
-    </test>
-    
-    <!-- API Tests -->
-    <test name="API Tests" enabled="true">
-        <parameter name="test.type" value="api"/>
-        <classes>
-            <class name="com.automation.api.UserAPITest"/>
-            <class name="com.automation.api.ProductAPITest"/>
-            <class name="com.automation.api.AuthenticationAPITest"/>
-        </classes>
-    </test>
-    
-    <!-- Database Tests -->
-    <test name="Database Tests" enabled="true">
-        <parameter name="test.type" value="database"/>
-        <classes>
-            <class name="com.automation.database.UserDatabaseTest"/>
-            <class name="com.automation.database.ProductDatabaseTest"/>
-            <class name="com.automation.database.OrderDatabaseTest"/>
-        </classes>
-    </test>
-    
-    <!-- Smoke Tests -->
-    <test name="Smoke Tests" enabled="true">
+
+    <!-- Smoke Test Suite -->
+    <test name="Smoke Tests" parallel="methods" thread-count="2">
+        <parameter name="testType" value="smoke"/>
         <groups>
             <run>
                 <include name="smoke"/>
             </run>
         </groups>
-        <packages>
-            <package name="com.automation.*"/>
-        </packages>
+        <classes>
+            <class name="com.automation.runners.SmokeTestRunner"/>
+        </classes>
     </test>
-    
-    <!-- Regression Tests -->
-    <test name="Regression Tests" enabled="false">
+
+    <!-- UI Test Suite -->
+    <test name="UI Tests" parallel="methods" thread-count="3">
+        <parameter name="testType" value="ui"/>
+        <groups>
+            <run>
+                <include name="ui"/>
+                <exclude name="api"/>
+                <exclude name="db"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.automation.runners.UITestRunner"/>
+        </classes>
+    </test>
+
+    <!-- API Test Suite -->
+    <test name="API Tests" parallel="methods" thread-count="5">
+        <parameter name="testType" value="api"/>
+        <groups>
+            <run>
+                <include name="api"/>
+                <exclude name="ui"/>
+                <exclude name="db"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.automation.runners.APITestRunner"/>
+        </classes>
+    </test>
+
+    <!-- Database Test Suite -->
+    <test name="Database Tests" parallel="methods" thread-count="2">
+        <parameter name="testType" value="database"/>
+        <groups>
+            <run>
+                <include name="db"/>
+                <exclude name="ui"/>
+                <exclude name="api"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.automation.runners.DatabaseTestRunner"/>
+        </classes>
+    </test>
+
+    <!-- Hybrid Test Suite -->
+    <test name="Hybrid End-to-End Tests" parallel="methods" thread-count="2">
+        <parameter name="testType" value="hybrid"/>
+        <groups>
+            <run>
+                <include name="hybrid"/>
+                <include name="end-to-end"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.automation.runners.HybridTestRunner"/>
+        </classes>
+    </test>
+
+    <!-- Regression Test Suite -->
+    <test name="Regression Tests" parallel="methods" thread-count="4">
+        <parameter name="testType" value="regression"/>
         <groups>
             <run>
                 <include name="regression"/>
             </run>
         </groups>
-        <packages>
-            <package name="com.automation.*"/>
-        </packages>
-    </test>
-    
-    <!-- Data Driven Tests -->
-    <test name="Data Driven Tests" enabled="true">
-        <parameter name="data.source" value="excel"/>
         <classes>
-            <class name="com.automation.ui.DataDrivenLoginTest"/>
-            <class name="com.automation.api.DataDrivenUserCreationTest"/>
+            <class name="com.automation.runners.CucumberTestRunner"/>
         </classes>
     </test>
-    
+
 </suite>
