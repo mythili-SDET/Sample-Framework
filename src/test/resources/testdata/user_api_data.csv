@@ -1,0 +1,11 @@
+name,email,age,role,status,expected_status,test_description
+John Doe,john.doe@example.com,30,admin,active,201,Valid admin user creation
+Jane Smith,jane.smith@example.com,25,user,active,201,Valid regular user creation
+Test User,test.user@example.com,28,user,inactive,201,Inactive user creation
+,empty.email@example.com,25,user,active,400,Empty name field
+Invalid Name,invalid-email,30,user,active,400,Invalid email format
+Valid User,valid@example.com,-5,user,active,400,Negative age
+Another User,another@example.com,150,user,active,400,Age too high
+Admin User,admin@example.com,35,admin,active,201,Admin user with valid data
+Special User,special+user@example.com,40,user,active,201,Email with special characters
+Update User,update@example.com,32,user,pending,201,User with pending status

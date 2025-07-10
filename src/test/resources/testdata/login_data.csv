@@ -1,0 +1,13 @@
+username,password,expected_result,test_description
+admin,admin123,success,Valid admin login
+user1,user123,success,Valid user login
+testuser,password,success,Valid test user login
+admin,wrongpass,failure,Invalid password for admin
+invaliduser,admin123,failure,Invalid username
+,admin123,failure,Empty username
+admin,,failure,Empty password
+,,failure,Both fields empty
+special@user,sp3c!al#pass,success,Special characters in credentials
+longusernametestuser,verylongpasswordtest123,success,Long credentials
+sql'injection,1' OR '1'='1,failure,SQL injection attempt
+<script>alert('xss')</script>,normalpass,failure,XSS attempt in username

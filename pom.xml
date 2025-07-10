@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.testframework</groupId>
-    <artifactId>robust-test-framework</artifactId>
+    <groupId>com.automation</groupId>
+   <artifactId>robust-test-framework</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>Robust Test Automation Framework</name>
-    <description>A comprehensive test automation framework supporting UI, API, and Database testing with multiple data sources</description>
+    <description>A comprehensive testing framework supporting UI, API, and Database testing with multiple data formats</description>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEn
+        
+        <!-- Dependency Versions -->
         <selenium.version>4.15.0</selenium.version>
         <testng.version>7.8.0</testng.version>
-        <rest-assured.version>5.3.2</rest-assured.version>
-        <apache.poi.version>5.2.4</apache.poi.version>
+        <webdrivermanager.version>5.6.2</webdrivermanager.version>
+        <restassured.version>5.3.2</restassured.version>
+        <jackson.version>2.15.2</jackson.version>
+        <poi.version>5.2.4</poi.version>
         <opencsv.version>5.8</opencsv.version>
-        <jackson.version>2.15.3</jackson.version>
         <mysql.version>8.0.33</mysql.version>
-        <logback.version>1.4.11</logback.version>
-        <webdrivermanager.version>5.5.3</webdrivermanager.version>
-    </properties>
+        <postgresql.version>42.6.0</postgresql.version>
+        <log4j.version>2.21.1</log4j.version>
+        <extentreports.version>5.1.1</extentreports.version>
+        <allure.version>2.24.0</allure.version>
+   </properties>
 
     <dependencies>
         <!-- Selenium WebDriver -->
@@ -37,13 +41,13 @@
         </dependency>
 
         <!-- WebDriverManager for automatic driver management -->
-        <dependency>
+ <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>${webdrivermanager.version}</version>
         </dependency>
 
-        <!-- TestNG for test execution -->
+        <!-- TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -80,33 +84,33 @@
             <version>${rest-assured.version}</version>
         </dependency>
 
-        <!-- JSON handling -->
-        <dependency>
+        <!-- JSON handling 
+    <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
-        <!-- Excel handling with Apache POI -->
+        <!-- Excel File Handling -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${apache.poi.version}</version>
+            <version>${poi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${apache.poi.version}</version>
+            <version>${poi.version}</version>
         </dependency>
 
-        <!-- CSV handling -->
+        <!-- CSV File Handling -->
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>${opencsv.version}</version>
         </dependency>
 
-        <!-- Database connectivity -->
+        <!-- Database Drivers -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -137,6 +141,36 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- Logging -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <!-- Reporting -->
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>${extentreports.version}</version>
+        </dependency>
+
+        <!-- Allure Reporting -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure.version}</version>
         </dependency>
     </dependencies>
 
@@ -151,16 +185,34 @@
                     <target>11</target>
                 </configuration>
             </plugin>
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                    <systemPropertyVariables>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+                    <argLine>
+                        -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/1.9.20.1/aspectjweaver-1.9.20.1.jar"
+                    </argLine>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>1.9.20.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>2.12.0</version>
             </plugin>
         </plugins>
     </build>
