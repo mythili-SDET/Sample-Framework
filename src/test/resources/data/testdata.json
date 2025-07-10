@@ -1,0 +1,42 @@
+[
+  {
+    "SearchTerm": "Selenium",
+    "ExpectedResult": "Selenium WebDriver",
+    "Category": "Automation"
+  },
+  {
+    "SearchTerm": "Java",
+    "ExpectedResult": "Java Programming",
+    "Category": "Programming"
+  },
+  {
+    "SearchTerm": "Python",
+    "ExpectedResult": "Python Programming",
+    "Category": "Programming"
+  },
+  {
+    "SearchTerm": "TestNG",
+    "ExpectedResult": "TestNG Framework",
+    "Category": "Testing"
+  },
+  {
+    "title": "Test Post Title",
+    "body": "Test Post Body",
+    "userId": 1
+  },
+  {
+    "title": "Another Test Post",
+    "body": "Another test post body content",
+    "userId": 2
+  },
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "age": 30
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "age": 25
+  }
+]

@@ -1,479 +1,461 @@
 # Robust Test Automation Framework
 
-A comprehensive test automation framework built with Java, Selenium, TestNG, and Maven. This framework supports UI, API, and Database testing with data-driven capabilities using Excel and CSV files.
+A comprehensive test automation framework built with Java, Selenium WebDriver, REST Assured, and TestNG that supports UI, API, and Database testing with multiple data sources.
 
 ## 🚀 Features
 
-- **Multi-Layer Testing**: UI, API, and Database testing capabilities
-- **Data-Driven Testing**: Support for Excel (.xlsx/.xls) and CSV data formats
-- **Cross-Browser Support**: Chrome, Firefox, Edge, and Safari browsers
-- **Parallel Execution**: TestNG parallel execution support
-- **Comprehensive Reporting**: ExtentReports and Allure reporting
-- **Robust Configuration**: Centralized configuration management
-- **Logging**: Log4j2 integration for detailed logging
-- **Screenshot Capture**: Automatic screenshot on test failures
-- **Database Support**: MySQL and PostgreSQL connectivity
-- **API Testing**: RESTAssured integration for API testing
+### Core Capabilities
+- **UI Testing**: Selenium WebDriver with Page Object Model
+- **API Testing**: REST Assured for comprehensive API testing
+- **Database Testing**: MySQL database connectivity and operations
+- **BDD Testing**: Cucumber framework for Behavior Driven Development
+- **Multi-Data Support**: Excel, CSV, and JSON data sources
+- **Parallel Execution**: TestNG parallel test execution
+- **Reporting**: Extent Reports for detailed test reporting
+- **Screenshot Capture**: Automatic screenshots on test failure
+- **Logging**: Comprehensive logging with Logback
+
+### Framework Architecture
+- **Maven-based**: Easy dependency management and build process
+- **Page Object Model**: Maintainable and reusable UI components
+- **Configuration Management**: Centralized configuration handling
+- **Data-Driven Testing**: Support for multiple data formats
+- **Cross-Browser Support**: Chrome, Firefox, Edge, Safari
+- **Headless Mode**: Support for headless browser execution
+
+## 📋 Prerequisites
+
+- Java 11 or higher
+- Maven 3.6 or higher
+- MySQL Database (for database testing)
+- Chrome/Firefox/Edge browser (for UI testing)
+
+## 🛠️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd robust-test-framework
+   ```
+
+2. **Install dependencies**
+   ```bash
+   mvn clean install
+   ```
+
+3. **Configure the framework**
+   - Update `src/test/resources/config/config.properties` with your settings
+   - Set up database connection details
+   - Configure browser preferences
+
+## ⚙️ Configuration
+
+### Configuration File: `src/test/resources/config/config.properties`
+
+```properties
+# Browser Configuration
+browser.name=chrome
+browser.headless=false
+browser.implicit.wait=10
+
+# Database Configuration
+db.url=jdbc:mysql://localhost:3306/testdb
+db.username=root
+db.password=password
+
+# API Configuration
+api.base.url=https://jsonplaceholder.typicode.com
+api.timeout=30
+
+# Test Data Configuration
+data.file.path=src/test/resources/data/
+excel.file.name=testdata.xlsx
+csv.file.name=testdata.csv
+json.file.name=testdata.json
+```
 
 ## 📁 Project Structure
 
 ```
 robust-test-framework/
 ├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/automation/
-│   │   │       ├── core/              # Core framework classes
-│   │   │       │   ├── ConfigManager.java
-│   │   │       │   ├── DriverManager.java
-│   │   │       │   └── UIBaseTest.java
-│   │   │       ├── utils/             # Utility classes
-│   │   │       │   ├── ExcelDataReader.java
-│   │   │       │   └── CSVDataReader.java
-│   │   │       ├── pages/             # Page Object classes
-│   │   │       ├── api/               # API testing components
-│   │   │       │   └── APIBaseTest.java
-│   │   │       └── database/          # Database testing components
-│   │   │           └── DatabaseManager.java
-│   │   └── resources/
-│   │       ├── config.properties     # Framework configuration
-│   │       └── log4j2.xml           # Logging configuration
+│   ├── main/java/com/testframework/
+│   │   ├── api/
+│   │   │   └── ApiManager.java
+│   │   ├── config/
+│   │   │   └── ConfigManager.java
+│   │   ├── core/
+│   │   │   └── BaseTest.java
+│   │   ├── database/
+│   │   │   └── DatabaseManager.java
+│   │   ├── ui/
+│   │   │   └── WebDriverManager.java
+│   │   └── utils/
+│   │       ├── CsvDataProvider.java
+│   │       ├── ExcelDataProvider.java
+│   │       └── JsonDataProvider.java
 │   └── test/
-│       ├── java/
-│       │   └── com/automation/
-│       │       ├── ui/              # UI test classes
-│       │       ├── api/             # API test classes
-│       │       └── database/        # Database test classes
+│       ├── java/com/testframework/
+│       │   ├── pageobjects/
+│       │   │   └── GoogleHomePage.java
+│       │   ├── steps/
+│       │   │   ├── UI_StepDefinitions.java
+│       │   │   ├── API_StepDefinitions.java
+│       │   │   └── Database_StepDefinitions.java
+│       │   ├── cucumber/
+│       │   │   ├── CucumberTestRunner.java
+│       │   │   └── CucumberHooks.java
+│       │   └── tests/
+│       │       ├── ApiTest.java
+│       │       ├── DatabaseTest.java
+│       │       └── UITest.java
 │       └── resources/
-│           ├── testng.xml           # TestNG suite configuration
-│           └── testdata/            # Test data files
-│               ├── login_data.csv
-│               └── user_api_data.csv
-├── reports/                         # Test reports
-├── logs/                           # Application logs
-├── target/                         # Build artifacts
-├── pom.xml                         # Maven configuration
-└── README.md                       # This file
+│           ├── config/
+│           │   └── config.properties
+│           ├── features/
+│           │   ├── ui_features.feature
+│           │   ├── api_features.feature
+│           │   └── database_features.feature
+│           └── data/
+│               ├── testdata.csv
+│               ├── testdata.json
+│               └── testdata.xlsx
+├── logs/
+├── reports/
+├── pom.xml
+├── testng.xml
+└── README.md
 ```
 
-## 🛠️ Prerequisites
+## 🧪 Running Tests
 
-- **Java 11 or higher**
-- **Maven 3.6 or higher**
-- **Browser drivers** (handled automatically by WebDriverManager)
-- **Database** (MySQL/PostgreSQL) - optional for database testing
-
-## ⚡ Quick Start
-
-### 1. Clone the Repository
-
+### Run All Tests
 ```bash
-git clone <repository-url>
-cd robust-test-framework
+mvn clean test
 ```
 
-### 2. Install Dependencies
-
+### Run Specific Test Class
 ```bash
-mvn clean install
+mvn test -Dtest=UITest
 ```
 
-### 3. Configure the Framework
-
-Edit `src/main/resources/config.properties`:
-
-```properties
-# Browser Configuration
-browser=chrome
-headless=false
-base.url=https://your-application-url.com
-
-# API Configuration
-api.base.url=https://your-api-url.com
-
-# Database Configuration (if needed)
-db.url=jdbc:mysql://localhost:3306/testdb
-db.username=your-username
-db.password=your-password
-```
-
-### 4. Run Tests
-
+### Run Tests with TestNG XML
 ```bash
-# Run all tests
-mvn test
-
-# Run specific test suite
-mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testng.xml
-
-# Run with specific browser
-mvn test -Dbrowser=firefox
-
-# Run in headless mode
-mvn test -Dheadless=true
+mvn test -DsuiteXmlFile=testng.xml
 ```
 
-## 📋 Framework Components
-
-### Configuration Management
-
-The `ConfigManager` class provides centralized configuration:
-
-```java
-ConfigManager config = ConfigManager.getInstance();
-String baseUrl = config.getBaseUrl();
-String browser = config.getBrowser();
-```
-
-### WebDriver Management
-
-The `DriverManager` handles browser lifecycle:
-
-```java
-DriverManager.initializeDriver();
-WebDriver driver = DriverManager.getDriver();
-DriverManager.quitDriver();
-```
-
-### Data-Driven Testing
-
-#### Excel Data Reader
-
-```java
-// Read all data from Excel
-List<Map<String, String>> data = ExcelDataReader.readExcelData("path/to/file.xlsx", "Sheet1");
-
-// Use with TestNG DataProvider
-@DataProvider
-public Object[][] testData() {
-    return ExcelDataReader.readExcelDataForTestNG("testdata.xlsx", "TestData");
-}
-```
-
-#### CSV Data Reader
-
-```java
-// Read all data from CSV
-List<Map<String, String>> data = CSVDataReader.readCSVData("path/to/file.csv");
-
-// Filter data
-List<Map<String, String>> filtered = CSVDataReader.filterCSVData("file.csv", "status", "active");
-```
-
-### UI Testing
-
-Extend `UIBaseTest` for UI tests:
-
-```java
-public class LoginTest extends UIBaseTest {
-    
-    @Test
-    public void testLogin() {
-        navigateTo("https://example.com/login");
-        type(By.id("username"), "testuser");
-        type(By.id("password"), "password");
-        click(By.id("login-button"));
-        
-        Assert.assertTrue(isDisplayed(By.id("dashboard")));
-    }
-}
-```
-
-### API Testing
-
-Extend `APIBaseTest` for API tests:
-
-```java
-public class UserAPITest extends APIBaseTest {
-    
-    @Test
-    public void testCreateUser() {
-        Map<String, Object> userData = new HashMap<>();
-        userData.put("name", "John Doe");
-        userData.put("email", "john@example.com");
-        
-        Response response = performPost("/users", userData);
-        validateStatusCode(response, 201);
-        
-        String userId = extractFromResponse(response, "id");
-        Assert.assertNotNull(userId);
-    }
-}
-```
-
-### Database Testing
-
-Use `DatabaseManager` for database operations:
-
-```java
-DatabaseManager dbManager = new DatabaseManager("mysql");
-
-// Execute query
-List<Map<String, Object>> users = dbManager.executeQuery("SELECT * FROM users WHERE active = ?", true);
-
-// Execute update
-int rows = dbManager.executeUpdate("UPDATE users SET status = ? WHERE id = ?", "active", 123);
-
-// Transaction management
-dbManager.commit();
-dbManager.rollback();
-```
-
-## 📊 Test Data Management
-
-### Excel Files
-
-Create Excel files with headers in the first row:
-
-| username | password | expected_result |
-|----------|----------|----------------|
-| admin    | admin123 | success        |
-| user1    | password | success        |
-| invalid  | wrong    | failure        |
-
-### CSV Files
-
-Create CSV files with comma-separated values:
-
-```csv
-username,password,expected_result
-admin,admin123,success
-user1,password,success
-invalid,wrong,failure
-```
-
-## 🔧 Configuration Options
-
-### Browser Configuration
-
-```properties
-# Supported browsers: chrome, firefox, edge, safari
-browser=chrome
-headless=false
-implicit.wait=10
-explicit.wait=20
-page.load.timeout=30
-```
-
-### Environment Configuration
-
-```properties
-environment=dev
-base.url=https://dev.example.com
-api.base.url=https://api.dev.example.com
-```
-
-### Database Configuration
-
-```properties
-# MySQL
-db.url=jdbc:mysql://localhost:3306/testdb
-db.username=testuser
-db.password=testpass
-db.driver=com.mysql.cj.jdbc.Driver
-
-# PostgreSQL
-postgres.url=jdbc:postgresql://localhost:5432/testdb
-postgres.username=testuser
-postgres.password=testpass
-postgres.driver=org.postgresql.Driver
-```
-
-## 📈 Reporting
-
-### ExtentReports
-
-Reports are automatically generated in the `reports/` directory.
-
-### Allure Reports
-
-Generate Allure reports:
-
+### Run Tests in Parallel
 ```bash
-# Generate report
-mvn allure:report
-
-# Serve report
-mvn allure:serve
-```
-
-### Screenshots
-
-Screenshots are automatically captured on test failures and saved to `reports/screenshots/`.
-
-## 🏃‍♂️ Running Tests
-
-### Command Line Options
-
-```bash
-# Browser selection
-mvn test -Dbrowser=chrome
-mvn test -Dbrowser=firefox
-
-# Headless mode
-mvn test -Dheadless=true
-
-# Environment
-mvn test -Denvironment=staging
-
-# Specific test groups
-mvn test -Dgroups=smoke
-mvn test -Dgroups=regression
-
-# Parallel execution
 mvn test -Dparallel=methods -DthreadCount=3
 ```
 
-### TestNG Groups
+### Run Tests by Groups
+```bash
+mvn test -Dgroups=smoke
+```
 
-Tests are organized by groups:
+### Run Cucumber BDD Tests
+```bash
+# Run all Cucumber tests
+mvn test -Dtest=CucumberTestRunner
 
-- `smoke`: Critical functionality tests
-- `regression`: Comprehensive test suite
-- `ui`: User interface tests
-- `api`: API tests
-- `database`: Database tests
+# Run specific Cucumber test types
+mvn test -Dtest=UITestRunner
+mvn test -Dtest=APITestRunner
+mvn test -Dtest=DatabaseTestRunner
 
-## 🔍 Debugging and Troubleshooting
+# Run tests by tags
+mvn test -Dcucumber.filter.tags="@smoke"
+mvn test -Dcucumber.filter.tags="@ui"
+mvn test -Dcucumber.filter.tags="@api"
+mvn test -Dcucumber.filter.tags="@database"
+```
 
-### Logging
+## 📊 Test Reports
 
-Logs are written to:
-- Console output
-- `logs/automation.log` (all logs)
-- `logs/error.log` (errors only)
+After test execution, reports are generated in the `reports/` directory:
+- **Extent Reports**: HTML reports with detailed test results
+- **Screenshots**: Failed test screenshots
+- **Logs**: Detailed execution logs
+
+## 🔧 Framework Components
+
+### 1. BaseTest Class
+The foundation class that all test classes extend:
+```java
+public class MyTest extends BaseTest {
+    @Override
+    protected boolean isUITest() {
+        return true; // or false for API/DB tests
+    }
+    
+    @Test
+    public void myTest() {
+        // Your test logic here
+    }
+}
+```
+
+### 2. Page Object Model
+Create page objects for UI elements:
+```java
+public class LoginPage {
+    @FindBy(id = "username")
+    private WebElement usernameField;
+    
+    @FindBy(id = "password")
+    private WebElement passwordField;
+    
+    public void login(String username, String password) {
+        usernameField.sendKeys(username);
+        passwordField.sendKeys(password);
+    }
+}
+```
+
+### 3. Data Providers
+Use different data sources for test data:
+
+#### Excel Data
+```java
+List<Map<String, String>> data = excelDataProvider.readExcelData("Sheet1");
+```
+
+#### CSV Data
+```java
+List<Map<String, String>> data = csvDataProvider.readCsvData();
+```
+
+#### JSON Data
+```java
+List<Map<String, Object>> data = jsonDataProvider.readJsonData();
+```
+
+### 4. Cucumber BDD Testing
+The framework supports Behavior Driven Development (BDD) using Cucumber:
+
+#### Feature Files
+Create feature files in `src/test/resources/features/`:
+```gherkin
+Feature: Google Search Functionality
+  As a user
+  I want to search for information on Google
+  So that I can find relevant results
+
+  @smoke @ui
+  Scenario: Basic Google Search
+    Given I am on the Google homepage
+    When I search for "Selenium WebDriver"
+    Then I should see search results
+    And the page title should contain "Selenium WebDriver"
+```
+
+#### Step Definitions
+Create step definitions that implement the BDD steps:
+```java
+public class UI_StepDefinitions extends CucumberBaseTest {
+    
+    @Given("I am on the Google homepage")
+    public void i_am_on_the_google_homepage() {
+        driver = webDriverManager.getDriver();
+        googlePage = new GoogleHomePage(driver);
+        googlePage.navigateTo();
+    }
+    
+    @When("I search for {string}")
+    public void i_search_for(String searchTerm) {
+        googlePage.search(searchTerm);
+    }
+    
+    @Then("I should see search results")
+    public void i_should_see_search_results() {
+        assertTrue(googlePage.areSearchResultsDisplayed());
+    }
+}
+```
+
+#### Test Runners
+Use different test runners for different test types:
+```java
+@CucumberOptions(
+    features = "src/test/resources/features",
+    glue = {"com.testframework.steps"},
+    tags = "@ui",
+    plugin = {"pretty", "html:target/cucumber-reports/ui-tests.html"}
+)
+public class UITestRunner extends AbstractTestNGCucumberTests {
+}
+```
+
+### 5. API Testing
+
+### 4. API Testing
+```java
+// Simple GET request
+ApiManager.ApiResponse response = apiManager.simpleGet("/posts");
+
+// POST request with body
+Map<String, Object> body = new HashMap<>();
+body.put("title", "Test Post");
+ApiManager.ApiResponse response = apiManager.simplePost("/posts", body);
+```
+
+### 5. Database Testing
+```java
+// Execute query
+List<Map<String, Object>> results = databaseManager.executeQuery("SELECT * FROM users");
+
+// Insert record
+Map<String, Object> data = new HashMap<>();
+data.put("name", "John Doe");
+databaseManager.insertRecord("users", data);
+```
+
+## 🎯 Best Practices
+
+### 1. Test Organization
+- Group related tests in the same class
+- Use descriptive test method names
+- Add proper test descriptions using `@Test(description = "...")`
+
+### 2. Data Management
+- Store test data in appropriate files (Excel, CSV, JSON)
+- Use data providers for data-driven tests
+- Keep test data separate from test logic
+
+### 3. Page Objects
+- Create page objects for each web page
+- Use `@FindBy` annotations for element location
+- Implement wait strategies for dynamic elements
+
+### 4. Error Handling
+- Use try-catch blocks for expected exceptions
+- Log errors appropriately
+- Take screenshots on test failures
+
+### 5. Configuration
+- Use configuration files for environment-specific settings
+- Avoid hardcoding values in test code
+- Use environment variables for sensitive data
+
+## 🔍 Debugging
+
+### Enable Debug Logging
+Update `config.properties`:
+```properties
+log.level=DEBUG
+```
+
+### View Test Execution
+```bash
+mvn test -X
+```
+
+### Check Reports
+- Open `reports/TestReport_*.html` for detailed reports
+- Check `logs/testframework.log` for execution logs
+
+## 🚀 CI/CD Integration
+
+### GitHub Actions Example
+```yaml
+name: Test Automation
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+      - name: Run Tests
+        run: mvn clean test
+      - name: Upload Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: reports/
+```
+
+## 📈 Extending the Framework
+
+### Adding New Browsers
+1. Update `WebDriverManager.java`
+2. Add browser-specific configuration
+3. Update `config.properties`
+
+### Adding New Data Sources
+1. Create new data provider class
+2. Implement required methods
+3. Update `BaseTest.java`
+
+### Adding New API Endpoints
+1. Extend `ApiManager.java`
+2. Add endpoint-specific methods
+3. Create corresponding test classes
+
+### Adding New Database Operations
+1. Extend `DatabaseManager.java`
+2. Add database-specific methods
+3. Create corresponding test classes
+
+## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **WebDriver Issues**: WebDriverManager automatically downloads drivers
-2. **Database Connection**: Verify database URL, credentials, and network connectivity
-3. **Element Not Found**: Check element locators and wait conditions
-4. **API Timeouts**: Adjust timeout settings in configuration
+1. **WebDriver Issues**
+   - Ensure browser drivers are in PATH
+   - Check browser version compatibility
+   - Verify WebDriverManager setup
 
-### Debug Mode
+2. **Database Connection Issues**
+   - Verify database credentials
+   - Check database server status
+   - Ensure proper JDBC driver
 
-Enable debug logging in `log4j2.xml`:
+3. **API Testing Issues**
+   - Verify API endpoint availability
+   - Check network connectivity
+   - Validate request/response format
 
-```xml
-<Logger name="com.automation" level="DEBUG" additivity="false">
-```
-
-## 🤝 Contributing
-
-1. Follow the existing code structure and naming conventions
-2. Add comprehensive JavaDoc comments
-3. Include unit tests for new utilities
-4. Update documentation for new features
-5. Use meaningful commit messages
-
-### Code Style Guidelines
-
-- Use descriptive method and variable names
-- Add comments for complex logic
-- Follow Java naming conventions
-- Keep methods focused and small
-- Use appropriate design patterns
-
-## 📚 Examples
-
-### Sample UI Test
-
-```java
-@Test(dataProvider = "loginData")
-public void testDataDrivenLogin(Map<String, String> testData) {
-    String username = testData.get("username");
-    String password = testData.get("password");
-    String expectedResult = testData.get("expected_result");
-    
-    navigateTo(config.getBaseUrl() + "/login");
-    type(By.id("username"), username);
-    type(By.id("password"), password);
-    click(By.id("login-btn"));
-    
-    if ("success".equals(expectedResult)) {
-        Assert.assertTrue(isDisplayed(By.id("dashboard")));
-    } else {
-        Assert.assertTrue(isDisplayed(By.className("error-message")));
-    }
-}
-
-@DataProvider(name = "loginData")
-public Object[][] getLoginData() {
-    return CSVDataReader.readCSVDataForTestNG("src/test/resources/testdata/login_data.csv");
-}
-```
-
-### Sample API Test
-
-```java
-@Test
-public void testUserCRUD() {
-    // Create user
-    Map<String, Object> userData = new HashMap<>();
-    userData.put("name", "Test User");
-    userData.put("email", "test@example.com");
-    
-    Response createResponse = performPost("/users", userData);
-    validateStatusCode(createResponse, 201);
-    
-    String userId = extractFromResponse(createResponse, "id");
-    
-    // Read user
-    Response getResponse = performGet("/users/" + userId);
-    validateStatusCode(getResponse, 200);
-    
-    // Update user
-    userData.put("name", "Updated User");
-    Response updateResponse = performPut("/users/" + userId, userData);
-    validateStatusCode(updateResponse, 200);
-    
-    // Delete user
-    Response deleteResponse = performDelete("/users/" + userId);
-    validateStatusCode(deleteResponse, 204);
-}
-```
-
-### Sample Database Test
-
-```java
-@Test
-public void testUserDatabase() {
-    DatabaseManager db = new DatabaseManager("mysql");
-    
-    // Create user
-    int rows = db.executeUpdate(
-        "INSERT INTO users (name, email) VALUES (?, ?)",
-        "Test User", "test@example.com"
-    );
-    Assert.assertEquals(rows, 1);
-    
-    // Read user
-    List<Map<String, Object>> users = db.executeQuery(
-        "SELECT * FROM users WHERE email = ?",
-        "test@example.com"
-    );
-    Assert.assertFalse(users.isEmpty());
-    
-    // Cleanup
-    db.executeUpdate("DELETE FROM users WHERE email = ?", "test@example.com");
-    db.commit();
-    db.closeConnection();
-}
-```
+4. **Data Provider Issues**
+   - Verify file paths and formats
+   - Check file encoding (UTF-8)
+   - Ensure proper data structure
 
 ## 📞 Support
 
-For questions or issues:
-
+For issues and questions:
 1. Check the logs in `logs/` directory
-2. Review configuration in `config.properties`
-3. Verify test data format and location
-4. Check network connectivity for API/database tests
+2. Review test reports in `reports/` directory
+3. Verify configuration in `config.properties`
+4. Check browser console for UI test issues
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## 🙏 Acknowledgments
+
+- Selenium WebDriver for UI automation
+- REST Assured for API testing
+- TestNG for test execution
+- Cucumber for BDD testing
+- Extent Reports for reporting
+- Apache POI for Excel handling
+- OpenCSV for CSV handling
+- Jackson for JSON handling
+
 ---
 
-**Happy Testing! 🎯**
+**Happy Testing! 🧪✨**
