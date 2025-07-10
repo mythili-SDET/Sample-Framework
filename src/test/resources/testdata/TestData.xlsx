@@ -1,0 +1,6 @@
+# This is a placeholder for TestData.xlsx
+# The actual Excel file should contain the following sheets:
+# - LoginData: username, password, expected_result
+# - UserData: name, email, role, status
+# - APITestData: endpoint, method, payload, expected_status
+# - DatabaseData: query, expected_result, table_name

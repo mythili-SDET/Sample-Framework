@@ -30,6 +30,7 @@
         <log4j.version>2.21.1</log4j.version>
         <extentreports.version>5.1.1</extentreports.version>
         <allure.version>2.24.0</allure.version>
+        <cucumber.version>7.14.0</cucumber.version>
     </properties>
 
     <dependencies>
@@ -123,6 +124,23 @@
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
             <version>${allure.version}</version>
+        </dependency>
+
+        <!-- Cucumber Dependencies -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>${cucumber.version}</version>
         </dependency>
     </dependencies>
 
