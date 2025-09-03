@@ -1,14 +1,13 @@
 package com.automation.stepdefinitions;
 
-import com.automation.api.GETRequest;
-import com.automation.api.POSTRequest;
-import com.automation.api.PUTRequest;
-import com.automation.api.DELETERequest;
+import com.automation.api.base.GETRequest;
+import com.automation.api.base.POSTRequest;
+import com.automation.api.base.PUTRequest;
+import com.automation.api.base.DELETERequest;
 import com.automation.core.ConfigManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.And;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;

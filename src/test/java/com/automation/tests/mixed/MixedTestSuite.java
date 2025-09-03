@@ -1,9 +1,9 @@
 package com.automation.tests.mixed;
 
-import com.automation.api.GETRequest;
-import com.automation.api.POSTRequest;
-import com.automation.api.PUTRequest;
-import com.automation.api.DELETERequest;
+import com.automation.api.base.GETRequest;
+import com.automation.api.base.POSTRequest;
+import com.automation.api.base.PUTRequest;
+import com.automation.api.base.DELETERequest;
 import com.automation.core.BaseDBTest;
 import com.automation.core.BaseUITest;
 import com.automation.core.ConfigManager;
