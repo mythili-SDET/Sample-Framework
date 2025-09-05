@@ -1,0 +1,27 @@
+username,password,expected_result,description
+admin@example.com,AdminPass123,dashboard,Admin login
+user@example.com,UserPass123,dashboard,Regular user login
+invalid@example.com,WrongPassword,error message,Invalid credentials
+testuser@example.com,TestPassword123,dashboard,Test user login
+guest@example.com,GuestPass123,dashboard,Guest user login
+
+name,email,role,status
+Test User 1,testuser1@example.com,user,active
+Test Admin,testadmin@example.com,admin,active
+Test Guest,testguest@example.com,guest,inactive
+API Test User,apitest@example.com,user,active
+Updated User,updated@example.com,user,active
+
+endpoint,method,payload,expected_status
+/users,POST,{"name":"Test User","email":"test@example.com","password":"TestPass123","role":"user"},201
+/users/1,GET,,200
+/users/1,PUT,{"name":"Updated User","email":"updated@example.com"},200
+/users/1,DELETE,,204
+/users/invalid,POST,{"name":"","email":"invalid","password":"123"},400
+
+query,expected_result,table_name
+SELECT * FROM users WHERE email = 'testuser@example.com',user exists,users
+SELECT COUNT(*) FROM users WHERE role = 'admin',count > 0,users
+SELECT * FROM user_profiles WHERE user_id = 1,profile exists,user_profiles
+SELECT * FROM users WHERE status = 'active',active users exist,users
+DELETE FROM users WHERE email LIKE '%test%',deletion successful,users

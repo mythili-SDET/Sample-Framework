@@ -1,6 +1,5 @@
 package com.automation.api.base;
 
-import com.automation.core.BaseAPITest;
 import io.restassured.response.Response;
 
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +19,7 @@ public class DELETERequest extends BaseAPITest {
      */
     public Response delete(String endpoint) {
         logger.info("Making DELETE request to: {}", endpoint);
-        return super.delete(endpoint);
+        return super.performDelete(endpoint);
     }
 
     /**
@@ -28,7 +27,7 @@ public class DELETERequest extends BaseAPITest {
      */
     public Response delete(String endpoint, Map<String, Object> pathParams) {
         logger.info("Making DELETE request to: {} with path params: {}", endpoint, pathParams);
-        return super.delete(endpoint, pathParams);
+        return super.performDelete(endpoint, pathParams);
     }
 
     /**

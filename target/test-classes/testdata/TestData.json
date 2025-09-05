@@ -1,0 +1,130 @@
+{
+  "loginData": [
+    {
+      "username": "admin@example.com",
+      "password": "AdminPass123",
+      "expectedResult": "dashboard",
+      "description": "Admin login"
+    },
+    {
+      "username": "user@example.com",
+      "password": "UserPass123",
+      "expectedResult": "dashboard",
+      "description": "Regular user login"
+    },
+    {
+      "username": "invalid@example.com",
+      "password": "WrongPassword",
+      "expectedResult": "error message",
+      "description": "Invalid credentials"
+    }
+  ],
+  "userData": [
+    {
+      "name": "Test User 1",
+      "email": "testuser1@example.com",
+      "role": "user",
+      "status": "active"
+    },
+    {
+      "name": "Test Admin",
+      "email": "testadmin@example.com",
+      "role": "admin",
+      "status": "active"
+    },
+    {
+      "name": "Test Guest",
+      "email": "testguest@example.com",
+      "role": "guest",
+      "status": "inactive"
+    }
+  ],
+  "apiTestData": [
+    {
+      "endpoint": "/users",
+      "method": "POST",
+      "payload": {
+        "name": "API Test User",
+        "email": "apitest@example.com",
+        "password": "APITestPass123",
+        "role": "user"
+      },
+      "expectedStatus": 201
+    },
+    {
+      "endpoint": "/users/1",
+      "method": "GET",
+      "payload": null,
+      "expectedStatus": 200
+    },
+    {
+      "endpoint": "/users/1",
+      "method": "PUT",
+      "payload": {
+        "name": "Updated API User",
+        "email": "updated@example.com"
+      },
+      "expectedStatus": 200
+    },
+    {
+      "endpoint": "/users/1",
+      "method": "DELETE",
+      "payload": null,
+      "expectedStatus": 204
+    }
+  ],
+  "databaseData": [
+    {
+      "query": "SELECT * FROM users WHERE email = 'testuser@example.com'",
+      "expectedResult": "user exists",
+      "tableName": "users"
+    },
+    {
+      "query": "SELECT COUNT(*) FROM users WHERE role = 'admin'",
+      "expectedResult": "count > 0",
+      "tableName": "users"
+    },
+    {
+      "query": "SELECT * FROM user_profiles WHERE user_id = 1",
+      "expectedResult": "profile exists",
+      "tableName": "user_profiles"
+    }
+  ],
+  "uiTestData": [
+    {
+      "page": "login",
+      "elements": [
+        {
+          "id": "username",
+          "type": "input",
+          "action": "sendKeys"
+        },
+        {
+          "id": "password",
+          "type": "input",
+          "action": "sendKeys"
+        },
+        {
+          "id": "login-button",
+          "type": "button",
+          "action": "click"
+        }
+      ]
+    },
+    {
+      "page": "dashboard",
+      "elements": [
+        {
+          "id": "dashboard",
+          "type": "div",
+          "action": "verifyVisible"
+        },
+        {
+          "id": "user-menu",
+          "type": "menu",
+          "action": "click"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 package com.automation.api.base;
 
-import com.automation.core.BaseAPITest;
 import io.restassured.response.Response;
 
 import org.apache.logging.log4j.LogManager;
@@ -56,15 +55,6 @@ public class GETRequest extends BaseAPITest {
         return requestSpec.headers(headers).when().get(endpoint);
     }
 
-    /**
-     * GET request with custom timeout
-     */
-    public Response getWithTimeout(String endpoint, int timeoutSeconds) {
-        logger.info("Making GET request to: {} with timeout: {} seconds", endpoint, timeoutSeconds);
-        return requestSpec.timeout(java.time.Duration.ofSeconds(timeoutSeconds))
-                         .when()
-                         .get(endpoint);
-    }
 
     /**
      * GET request with authentication
@@ -152,26 +142,6 @@ public class GETRequest extends BaseAPITest {
     public Response getWithProxy(String endpoint, String host, int port) {
         logger.info("Making GET request to: {} with proxy: {}:{}", endpoint, host, port);
         return requestSpec.proxy(host, port)
-                         .when()
-                         .get(endpoint);
-    }
-
-    /**
-     * GET request with custom SSL
-     */
-    public Response getWithSSL(String endpoint, String keystorePath, String keystorePassword) {
-        logger.info("Making GET request to: {} with SSL keystore", endpoint);
-        return requestSpec.keystore(keystorePath, keystorePassword)
-                         .when()
-                         .get(endpoint);
-    }
-
-    /**
-     * GET request with relaxed HTTPS validation
-     */
-    public Response getWithRelaxedHTTPS(String endpoint) {
-        logger.info("Making GET request to: {} with relaxed HTTPS validation", endpoint);
-        return requestSpec.relaxedHTTPSValidation()
                          .when()
                          .get(endpoint);
     }

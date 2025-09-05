@@ -4,7 +4,6 @@ import com.automation.api.base.GETRequest;
 import com.automation.api.base.POSTRequest;
 import com.automation.api.base.PUTRequest;
 import com.automation.api.base.DELETERequest;
-import com.automation.core.ConfigManager;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;

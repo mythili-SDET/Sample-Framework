@@ -1,6 +1,5 @@
 package com.automation.api.base;
 
-import com.automation.core.BaseAPITest;
 import io.restassured.response.Response;
 
 import org.apache.logging.log4j.LogManager;

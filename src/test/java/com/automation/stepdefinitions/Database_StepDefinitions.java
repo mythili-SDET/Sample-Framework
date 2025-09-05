@@ -1,11 +1,10 @@
 package com.automation.stepdefinitions;
 
-import com.automation.core.BaseDBTest;
-import com.automation.core.ConfigManager;
+import com.automation.config.ConfigManager;
+import com.automation.db.BaseDBTest;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.And;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.Assert;
@@ -14,8 +13,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Step definitions for database validation scenarios

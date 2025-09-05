@@ -1,7 +1,7 @@
 package com.automation.helpers;
 
-import com.automation.core.DriverFactory;
-import com.automation.core.LoggerManager;
+import com.automation.db.DriverFactory;
+import com.automation.db.LoggerManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;

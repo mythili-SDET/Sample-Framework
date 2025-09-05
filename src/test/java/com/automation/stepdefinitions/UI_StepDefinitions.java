@@ -1,11 +1,10 @@
 package com.automation.stepdefinitions;
 
-import com.automation.core.WebDriverManager;
-import com.automation.ui.pages.BasePage;
+import com.automation.driver.DriverManager;
+import com.automation.ui.base.BasePage;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.And;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
@@ -29,9 +28,9 @@ public class UI_StepDefinitions {
 
     @Given("the user is on the login page")
     public void the_user_is_on_the_login_page() {
-        driver = WebDriverManager.getDriver();
+        driver = DriverManager.getDriver();
         basePage = new BasePage(driver);
-        
+
         // Navigate to login page (replace with actual URL)
         driver.get("https://example.com/login");
         logger.info("Navigated to login page");
