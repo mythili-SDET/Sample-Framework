@@ -1,7 +1,7 @@
 package com.automation.helpers;
 
-import com.automation.db.DriverFactory;
-import com.automation.db.LoggerManager;
+import com.automation.driver.DriverFactory;
+import com.automation.logger.LoggerManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -16,13 +16,13 @@ import java.util.List;
  * Provides robust waiting mechanisms with retry logic
  */
 public class WaitHelper {
-    private static final Logger logger = LoggerManager.getInstance().getLogger(WaitHelper.class);
+    private static final Logger logger = LoggerManager.getLogger(WaitHelper.class);
     private final WebDriver driver;
     private static final int DEFAULT_TIMEOUT = 10;
     private static final int DEFAULT_POLLING = 1;
     
     public WaitHelper() {
-        this.driver = DriverFactory.getInstance().getDriver();
+        this.driver = DriverFactory.getDriver();
     }
     
     /**

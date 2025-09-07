@@ -1,6 +1,6 @@
 package com.automation.utils;
 
-import com.automation.config.LoggerManager;
+import com.automation.logger.LoggerManager;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.Logger;
@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -253,6 +254,17 @@ public class FileUtils {
             logger.error("Error appending to file: {}", filePath, e);
             return false;
         }
+    }
+
+    /**
+     * Write Map as JSON to file using JsonUtil
+     * @param filePath Destination file path
+     * @param content Map content to serialize
+     * @return true if write successful
+     */
+    public static boolean writeJson(String filePath, Map<String, Object> content) {
+        String json = JsonUtil.objectToJson(content);
+        return writeStringToFile(filePath, json);
     }
     
     /**

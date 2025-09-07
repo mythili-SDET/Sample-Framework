@@ -1,5 +1,43 @@
 package com.automation.listeners;
 
+import io.qameta.allure.Allure;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
+public class TestListener implements ITestListener {
+    @Override
+    public void onTestStart(ITestResult result) {
+        Allure.label("testMethod", result.getMethod().getMethodName());
+    }
+
+    @Override
+    public void onTestSuccess(ITestResult result) {
+        Allure.addAttachment("Test Status", "PASSED");
+    }
+
+    @Override
+    public void onTestFailure(ITestResult result) {
+        Allure.addAttachment("Test Status", "FAILED");
+        if (result.getThrowable() != null) {
+            Allure.addAttachment("Failure Reason", result.getThrowable().toString());
+        }
+    }
+
+    @Override
+    public void onTestSkipped(ITestResult result) {
+        Allure.addAttachment("Test Status", "SKIPPED");
+    }
+
+    @Override
+    public void onStart(ITestContext context) { }
+
+    @Override
+    public void onFinish(ITestContext context) { }
+}
+
+package com.automation.listeners;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.ITestContext;

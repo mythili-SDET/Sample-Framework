@@ -10,7 +10,7 @@ import org.testng.annotations.DataProvider;
 @Feature("Cucumber BDD Tests")
 @CucumberOptions(
         features = "src/test/resources/features",
-        glue = {"com.framework.stepdefinitions", "com.framework.hooks"},
+        glue = {"com.automation.stepdefinitions", "com.automation.hooks"},
         plugin = {
                 "pretty",
                 "html:target/cucumber-reports",

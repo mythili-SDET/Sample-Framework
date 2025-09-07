@@ -1,6 +1,7 @@
+
 package com.automation.utils;
 
-import com.automation.config.LoggerManager;
+import com.automation.logger.LoggerManager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +19,23 @@ import java.util.*;
  * Provides methods to read, write, and manipulate JSON files
  */
 public class JsonUtil {
+     public static String objectToJson(Object obj) {
+         try {
+             return objectMapper.writeValueAsString(obj);
+         } catch (IOException e) {
+             logger.error("Error converting object to JSON string", e);
+             throw new RuntimeException("Failed to convert object to JSON string", e);
+         }
+     }
+
+     public static String mapToJson(Map<String, Object> map) {
+         try {
+             return objectMapper.writeValueAsString(map);
+         } catch (IOException e) {
+             logger.error("Error converting map to JSON string", e);
+             throw new RuntimeException("Failed to convert map to JSON string", e);
+         }
+     }
     
     private static final Logger logger = LoggerManager.getLogger(JsonUtil.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();

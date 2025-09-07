@@ -1,7 +1,7 @@
 package com.automation.helpers;
 
-import com.automation.db.DriverFactory;
-import com.automation.db.LoggerManager;
+import com.automation.driver.DriverFactory;
+import com.automation.logger.LoggerManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -13,12 +13,12 @@ import java.util.List;
  * Provides retry mechanisms and fallback strategies for common exceptions
  */
 public class SeleniumHelper {
-    private static final Logger logger = LoggerManager.getInstance().getLogger(SeleniumHelper.class);
+    private static final Logger logger = LoggerManager.getLogger(SeleniumHelper.class);
     private final WebDriver driver;
     private final Actions actions;
     
     public SeleniumHelper() {
-        this.driver = DriverFactory.getInstance().getDriver();
+        this.driver = DriverFactory.getDriver();
         this.actions = new Actions(driver);
     }
     
@@ -71,6 +71,7 @@ public class SeleniumHelper {
      * Click element with retry mechanism
      */
     public void click(By locator) {
+        LoggerManager.logUIOperation("CLICK", locator.toString(), null);
         click(locator, 3);
     }
     
@@ -116,6 +117,7 @@ public class SeleniumHelper {
      * Type text with retry mechanism
      */
     public void type(By locator, String text) {
+        LoggerManager.logUIOperation("TYPE", locator.toString(), text);
         type(locator, text, 3);
     }
     

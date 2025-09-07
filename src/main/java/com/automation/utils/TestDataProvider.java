@@ -190,4 +190,21 @@ public class TestDataProvider {
     public static List<String> getAvailableSheets() {
         return ExcelUtil.getSheetNames(DEFAULT_EXCEL_PATH);
     }
+
+    private static final String TESTDATA_BASE = "src/test/resources/testdata/";
+
+    public static Object[][] fromExcel(String fileName, String sheetName) {
+        ExcelDataProvider provider = new ExcelDataProvider();
+        return provider.getData(TESTDATA_BASE + fileName, sheetName);
+    }
+
+    public static List<Map<String, String>> fromCsv(String fileName) {
+        CSVDataProvider provider = new CSVDataProvider();
+        return provider.getData(TESTDATA_BASE + fileName);
+    }
+
+    public static List<Map<String, Object>> fromJson(String fileName, String rootKey) {
+        JSONDataProvider provider = new JSONDataProvider();
+        return provider.getData(TESTDATA_BASE + fileName, rootKey);
+    }
 }

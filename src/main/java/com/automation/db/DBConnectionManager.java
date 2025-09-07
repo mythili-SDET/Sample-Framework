@@ -1,38 +1,36 @@
 package com.automation.db;
 
-import org.apache.commons.dbcp2.BasicDataSource;
-
+import com.automation.config.ConfigManager;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnectionManager {
 
-    private static BasicDataSource dataSource;
+    private static String jdbcUrl;
+    private static String username;
+    private static String password;
 
     static {
-        dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        dataSource.setUrl("jdbc:oracle:thin:@//localhost:1521/orclpdb1"); // Change to your host, port, service name
-        dataSource.setUsername("your_oracle_username");
-        dataSource.setPassword("your_oracle_password");
-
-        // Connection pool settings
-        dataSource.setInitialSize(5);
-        dataSource.setMaxTotal(10);
-        dataSource.setMinIdle(2);
-        dataSource.setMaxIdle(5);
-
-        dataSource.setValidationQuery("SELECT 1 FROM DUAL"); // Oracle specific test query
-        dataSource.setTestOnBorrow(true);
+        ConfigManager config = ConfigManager.getInstance();
+        String host = config.getDBHost();
+        int port = config.getDBPort();
+        String dbName = config.getDBName();
+        username = config.getDBUsername();
+        password = config.getDBPassword();
+        jdbcUrl = String.format("jdbc:mysql://%s:%d/%s", host, port, dbName);
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found", e);
+        }
     }
 
     public static Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
+        return DriverManager.getConnection(jdbcUrl, username, password);
     }
 
     public static void close() throws SQLException {
-        if (dataSource != null) {
-            dataSource.close();
-        }
+        // no-op for DriverManager
     }
 }

@@ -1,6 +1,6 @@
 package com.automation.utils;
 
-import com.automation.config.LoggerManager;
+import com.automation.logger.LoggerManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;

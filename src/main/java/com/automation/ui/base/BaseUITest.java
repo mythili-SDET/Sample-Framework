@@ -1,14 +1,20 @@
 package com.automation.ui.base;
 
-import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-
-import org.apache.logging.log4j.LogManager;
+import com.automation.config.ConfigManager;
+import com.automation.driver.DriverManager;
+import com.automation.helpers.SeleniumHelper;
+import com.automation.helpers.WaitHelper;
+import com.automation.listeners.RetryListener;
+import com.automation.listeners.TestListener;
+import com.automation.logger.LoggerManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
+import org.testng.annotations.Listeners;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,327 +25,73 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Base class for UI automation tests
- * Provides common WebDriver operations and utilities
- */
+@Listeners({TestListener.class, RetryListener.class})
 public class BaseUITest {
-    protected static final Logger logger = LogManager.getLogger(BaseUITest.class);
+    protected static final Logger logger = LoggerManager.getLogger(BaseUITest.class);
+
+    protected ConfigManager config;
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected Actions actions;
-    protected ConfigManager config;
 
-    public BaseUITest() {
-        this.config = ConfigManager.getInstance();
-        this.driver = WebDriverManager.getDriver();
-        this.wait = WebDriverManager.getWait();
-        this.actions = new Actions(driver);
+    // Helpers
+    protected SeleniumHelper seleniumHelper;
+    protected WaitHelper waitHelper;
+
+    @BeforeSuite(alwaysRun = true)
+    public void beforeSuite() {
+        config = ConfigManager.getInstance();
+        LoggerManager.logFrameworkEvent("UI Test Suite Start", "Environment: " + System.getProperty("env", "qa"));
     }
 
-    /**
-     * Navigate to URL
-     */
+    @BeforeMethod(alwaysRun = true)
+    public void setUp() {
+        DriverManager.initializeDriver();
+        driver = DriverManager.getDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(config.getExplicitWait()));
+
+        // Initialize helpers backed by current driver
+        seleniumHelper = new SeleniumHelper();
+        waitHelper = new WaitHelper();
+        
+        LoggerManager.logFrameworkEvent("WebDriver Initialized", "Test: " + this.getClass().getSimpleName());
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void tearDown(ITestResult result) {
+        try {
+            if (!result.isSuccess()) {
+                saveScreenshot(result.getMethod().getMethodName());
+            }
+        } finally {
+            DriverManager.quitDriver();
+        }
+    }
+
     protected void navigateTo(String url) {
         logger.info("Navigating to: {}", url);
         driver.get(url);
     }
 
-    /**
-     * Navigate to base URL with path
-     */
     protected void navigateToPath(String path) {
-        String fullUrl = config.getUIBaseUrl() + path;
-        navigateTo(fullUrl);
+        navigateTo(config.getUIBaseUrl() + path);
     }
 
-    /**
-     * Find element with explicit wait
-     */
-    protected WebElement findElement(By locator) {
-        return wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-    }
-
-    /**
-     * Find element with custom timeout
-     */
-    protected WebElement findElement(By locator, int timeoutSeconds) {
-        WebDriverWait customWait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
-        return customWait.until(ExpectedConditions.presenceOfElementLocated(locator));
-    }
-
-    /**
-     * Click element with explicit wait
-     */
-    protected void click(By locator) {
-        logger.info("Clicking element: {}", locator);
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
-    }
-
-    /**
-     * Click element with JavaScript
-     */
-    protected void clickWithJS(By locator) {
-        logger.info("Clicking element with JavaScript: {}", locator);
-        WebElement element = findElement(locator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-    }
-
-    /**
-     * Send keys to element
-     */
-    protected void sendKeys(By locator, String text) {
-        logger.info("Sending keys to element {}: {}", locator, text);
-        WebElement element = findElement(locator);
-        element.clear();
-        element.sendKeys(text);
-    }
-
-    /**
-     * Get text from element
-     */
-    protected String getText(By locator) {
-        return findElement(locator).getText();
-    }
-
-    /**
-     * Get attribute value
-     */
-    protected String getAttribute(By locator, String attribute) {
-        return findElement(locator).getAttribute(attribute);
-    }
-
-    /**
-     * Check if element is displayed
-     */
-    protected boolean isElementDisplayed(By locator) {
-        try {
-            return findElement(locator).isDisplayed();
-        } catch (TimeoutException | NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Check if element is enabled
-     */
-    protected boolean isElementEnabled(By locator) {
-        try {
-            return findElement(locator).isEnabled();
-        } catch (TimeoutException | NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Wait for element to be visible
-     */
-    protected void waitForElementVisible(By locator) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-    }
-
-    /**
-     * Wait for element to be clickable
-     */
-    protected void waitForElementClickable(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator));
-    }
-
-    /**
-     * Wait for element to disappear
-     */
-    protected void waitForElementInvisible(By locator) {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-    }
-
-    /**
-     * Select option by visible text
-     */
-    protected void selectByVisibleText(By locator, String text) {
-        Select select = new Select(findElement(locator));
-        select.selectByVisibleText(text);
-    }
-
-    /**
-     * Select option by value
-     */
-    protected void selectByValue(By locator, String value) {
-        Select select = new Select(findElement(locator));
-        select.selectByValue(value);
-    }
-
-    /**
-     * Select option by index
-     */
-    protected void selectByIndex(By locator, int index) {
-        Select select = new Select(findElement(locator));
-        select.selectByIndex(index);
-    }
-
-    /**
-     * Hover over element
-     */
-    protected void hoverOver(By locator) {
-        actions.moveToElement(findElement(locator)).perform();
-    }
-
-    /**
-     * Drag and drop
-     */
-    protected void dragAndDrop(By source, By target) {
-        actions.dragAndDrop(findElement(source), findElement(target)).perform();
-    }
-
-    /**
-     * Scroll to element
-     */
-    protected void scrollToElement(By locator) {
-        WebElement element = findElement(locator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
-    }
-
-    /**
-     * Scroll to bottom of page
-     */
-    protected void scrollToBottom() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight);");
-    }
-
-    /**
-     * Switch to frame
-     */
-    protected void switchToFrame(By locator) {
-        driver.switchTo().frame(findElement(locator));
-    }
-
-    /**
-     * Switch to default content
-     */
-    protected void switchToDefaultContent() {
-        driver.switchTo().defaultContent();
-    }
-
-    /**
-     * Switch to window by title
-     */
-    protected void switchToWindowByTitle(String title) {
-        for (String windowHandle : driver.getWindowHandles()) {
-            driver.switchTo().window(windowHandle);
-            if (driver.getTitle().contains(title)) {
-                break;
-            }
-        }
-    }
-
-    /**
-     * Accept alert
-     */
-    protected void acceptAlert() {
-        wait.until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert().accept();
-    }
-
-    /**
-     * Dismiss alert
-     */
-    protected void dismissAlert() {
-        wait.until(ExpectedConditions.alertIsPresent());
-        driver.switchTo().alert().dismiss();
-    }
-
-    /**
-     * Get alert text
-     */
-    protected String getAlertText() {
-        wait.until(ExpectedConditions.alertIsPresent());
-        return driver.switchTo().alert().getText();
-    }
-
-    /**
-     * Take screenshot
-     */
-    protected String takeScreenshot(String testName) {
+    protected String saveScreenshot(String testName) {
         try {
             String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             String fileName = testName + "_" + timestamp + ".png";
             String screenshotPath = config.getProperty("screenshot.path", "target/screenshots/") + fileName;
-            
+
             Path path = Paths.get(screenshotPath);
             Files.createDirectories(path.getParent());
-            
+
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             Files.copy(screenshot.toPath(), path);
-            
             logger.info("Screenshot saved: {}", screenshotPath);
             return screenshotPath;
         } catch (IOException e) {
             logger.error("Failed to take screenshot", e);
             return null;
         }
-    }
-
-    /**
-     * Assert element is displayed
-     */
-    protected void assertElementDisplayed(By locator, String message) {
-        Assert.assertTrue(isElementDisplayed(locator), message);
-    }
-
-    /**
-     * Assert element is not displayed
-     */
-    protected void assertElementNotDisplayed(By locator, String message) {
-        Assert.assertFalse(isElementDisplayed(locator), message);
-    }
-
-    /**
-     * Assert text equals
-     */
-    protected void assertTextEquals(By locator, String expectedText, String message) {
-        String actualText = getText(locator);
-        Assert.assertEquals(actualText, expectedText, message);
-    }
-
-    /**
-     * Assert text contains
-     */
-    protected void assertTextContains(By locator, String expectedText, String message) {
-        String actualText = getText(locator);
-        Assert.assertTrue(actualText.contains(expectedText), message);
-    }
-
-    /**
-     * Get current URL
-     */
-    protected String getCurrentUrl() {
-        return driver.getCurrentUrl();
-    }
-
-    /**
-     * Get page title
-     */
-    protected String getPageTitle() {
-        return driver.getTitle();
-    }
-
-    /**
-     * Refresh page
-     */
-    protected void refreshPage() {
-        driver.navigate().refresh();
-    }
-
-    /**
-     * Go back
-     */
-    protected void goBack() {
-        driver.navigate().back();
-    }
-
-    /**
-     * Go forward
-     */
-    protected void goForward() {
-        driver.navigate().forward();
     }
 }

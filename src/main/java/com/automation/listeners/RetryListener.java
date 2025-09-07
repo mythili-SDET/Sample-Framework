@@ -1,5 +1,24 @@
 package com.automation.listeners;
 
+import org.testng.IRetryAnalyzer;
+import org.testng.ITestResult;
+
+public class RetryListener implements IRetryAnalyzer {
+    private int retryCount = 0;
+    private static final int maxRetryCount = Integer.parseInt(System.getProperty("retry.count", "2"));
+
+    @Override
+    public boolean retry(ITestResult result) {
+        if (retryCount < maxRetryCount) {
+            retryCount++;
+            return true;
+        }
+        return false;
+    }
+}
+
+package com.automation.listeners;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.IRetryAnalyzer;

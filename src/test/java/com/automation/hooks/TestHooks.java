@@ -1,8 +1,15 @@
 package com.automation.hooks;
 
-import com.framework.config.ConfigManager;
+import com.automation.config.ConfigManager;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.BeforeStep;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import com.automation.driver.DriverManager;
 import io.cucumber.java.Scenario;
 import io.qameta.allure.*;
 import io.restassured.RestAssured;
@@ -24,12 +31,12 @@ public class TestHooks {
         });
 
         // Set base configuration
-        RestAssured.baseURI = ConfigManager.getBaseUrl();
+        RestAssured.baseURI = ConfigManager.getInstance().getAPIBaseUrl();
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
         // Add environment information
-        Allure.addAttachment("Base URI", ConfigManager.getBaseUrl());
-        Allure.addAttachment("Environment", ConfigManager.getProperty("environment"));
+        Allure.addAttachment("Base URI", ConfigManager.getInstance().getAPIBaseUrl());
+        Allure.addAttachment("Environment", System.getProperty("env", "qa"));
 
         // Add scenario tags to report
         for (String tag : scenario.getSourceTagNames()) {
@@ -58,5 +65,19 @@ public class TestHooks {
         RestAssured.reset();
 
         logger.info("Cleanup completed for scenario: {}", scenario.getName());
+    }
+
+    @BeforeStep
+    public void beforeStep(Scenario scenario) {
+        Allure.step("Starting step: " + scenario.getName());
+    }
+
+    @AfterStep
+    public void afterStep(Scenario scenario) {
+        WebDriver driver = DriverManager.getDriver();
+        if (driver != null) {
+            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            Allure.getLifecycle().addAttachment("Step Screenshot", "image/png", "png", screenshot);
+        }
     }
 }
